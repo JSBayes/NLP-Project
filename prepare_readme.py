@@ -128,6 +128,9 @@ def prep_readme():
     # drop null values
     df = df.dropna()
 
+    # drop rows that contain jupyter notebook or error no read me
+    df = df([df.language!='Jupyter Notebook'] | [df.readme_contents!="error no readme"])
+
     # drop jupyter notebook
     df = df([df.language!='Jupyter Notebook'] | [df.readme_contents!="error no readme"])
 
