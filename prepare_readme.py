@@ -118,7 +118,8 @@ def prep_readme():
     
     # convert data to dataframe
     df = pd.DataFrame(datastore)
-
+    df = df[df.language!='Jupyter Notebook']
+    df = df[df.readme_contents!="error no readme"]
    # create column applying basic_cleaning and stem functions
     df['readme_contents_stemmed'] = df.readme_contents.apply(basic_clean).apply(remove_stopwords).apply(stem)
 
@@ -127,10 +128,6 @@ def prep_readme():
 
     # drop null values
     df = df.dropna()
-
-    # drop jupyter notebook
-    df = df[(df.language!='Jupyter Notebook') | (df.readme_contents!="error no readme")]
-
     return df
 
 
