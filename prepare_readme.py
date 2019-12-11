@@ -129,7 +129,7 @@ def prep_readme():
     df = df.dropna()
 
     # drop jupyter notebook
-    df = df((df.language!='Jupyter Notebook' | df.readme_contents!="error no readme")]
+    df = df[(df.language!='Jupyter Notebook' | df.readme_contents!="error no readme")]
 
     return df
 
