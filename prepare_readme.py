@@ -128,6 +128,9 @@ def prep_readme():
     # drop null values
     df = df.dropna()
 
+    # drop rows that contain jupyter notebook or error no read me
+    df = df([df.language!='Jupyter Notebook'] | [df.readme_contents!="error no readme"])
+
     # drop jupyter notebook
     df = df[df.language!='Jupyter Notebook']
 
@@ -143,6 +146,6 @@ def tokenize(article):
     tokenizer = nltk.tokenize.ToktokTokenizer()
 
     # use object to tokenize string
-    article = tokenizer.tokenize(article, return_str=True)
+    article = tokenizer.tokenize(article, return_str=False)
     
     return article
