@@ -16,7 +16,7 @@ def get_ngrams(df,n=2):
 
         bigrams = nltk.ngrams(row, n)
 
-        ngram_master_list.extend(bigrams)
+        df_ngram_list.extend(bigrams)
     
     return ngram_master_list
     
