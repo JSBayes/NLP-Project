@@ -5,6 +5,8 @@ import json
 import nltk
 from nltk.tokenize.toktok import ToktokTokenizer
 from nltk.corpus import stopwords
+import pandas as pd
+
 
 def get_ASCII(article):
     '''
@@ -26,20 +28,6 @@ def purge_non_characters(article):
     article = re.sub(r"[^a-z\s]", ' ', article)
     
     return article
-
-def tokenize(article):
-    '''
-    tokenizes words in a string
-    '''
-
-    # create token object
-    tokenizer = nltk.tokenize.ToktokTokenizer()
-
-    # use object to tokenize string
-    article = tokenizer.tokenize(article, return_str=True)
-    
-    return article
-
 
 def stem(article):
     '''
@@ -118,16 +106,43 @@ def basic_clean(article):
     
     return article
 
-def prep_readme(df):
+def prep_readme():
     '''
     takes in a dataframe with a 'readme_contents' column and adds columns 
     tokinizing the readme columns using stem and lemmatize
     '''
+
+    # open jason files
+    with open('data.json', 'r') as f:
+        datastore = json.load(f)
     
-    # create column applying basic_cleaning and stem functions
+    # convert data to dataframe
+    df = pd.DataFrame(datastore)
+
+   # create column applying basic_cleaning and stem functions
     df['readme_contents_stemmed'] = df.readme_contents.apply(basic_clean).apply(remove_stopwords).apply(stem)
 
     # create column applying basic_cleaning and lemmatize functions
     df['readme_contents_lemmatized'] = df.readme_contents.apply(basic_clean).apply(remove_stopwords).apply(lemmatize)
 
+    # drop null values
+    df = df.dropna()
+
+    # drop jupyter notebook
+    df = df[df.language!='Jupyter Notebook']
+
     return df
+
+
+def tokenize(article):
+    '''
+    tokenizes words in a string
+    '''
+
+    # create token object
+    tokenizer = nltk.tokenize.ToktokTokenizer()
+
+    # use object to tokenize string
+    article = tokenizer.tokenize(article, return_str=True)
+    
+    return article

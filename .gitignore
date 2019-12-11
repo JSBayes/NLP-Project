@@ -1,2 +1,4 @@
 env.py
 .gitignore
+.ipynb_checkpoints/
+__pycache__/prepare_readme.cpython-37.pyc
