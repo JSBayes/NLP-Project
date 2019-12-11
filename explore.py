@@ -8,7 +8,7 @@ def get_words(text):
     words = re.sub(r'[^\w\s]', '', text).split()
     return words
 
-def get_ngrams(n=2):
+def get_ngrams(df,n=2):
 
     ngram_master_list = []
 
