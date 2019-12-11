@@ -1,3 +1,8 @@
+import re
+import unicodedata
+import pandas as pd
+import nltk
+
 def get_words(text):
     
     words = re.sub(r'[^\w\s]', '', text).split()
