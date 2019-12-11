@@ -143,6 +143,6 @@ def tokenize(article):
     tokenizer = nltk.tokenize.ToktokTokenizer()
 
     # use object to tokenize string
-    article = tokenizer.tokenize(article, return_str=True)
+    article = tokenizer.tokenize(article, return_str=False)
     
     return article
