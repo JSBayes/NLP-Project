@@ -63,3 +63,32 @@ df["all"] = df.sum(axis=1)
 
 
 
+
+import seaborn as sns
+
+sns.countplot(origin_df.language)
+
+
+def clean(text):
+    "a simple function to prepare text data"
+    wnl = nltk.stem.WordNetLemmatizer()
+    stopwords = nltk.corpus.stopwords.words("english") + ["r", "u", "2", "ltgt", "1"]
+    text = (
+        unicodedata.normalize("NFKD", text)
+        .encode("ascii", "ignore")
+        .decode("utf-8", "ignore")
+        .lower()
+    )
+    words = re.sub(r"[^\w\s]", "", text).split()
+    return [wnl.lemmatize(word) for word in words if word not in stopwords]
+
+df = pd.read_json("data.json")
+all_words = clean(' '.join(df.readme_contents))
+dfv = pd.DataFrame(all_words)
+dfv.rename(columns={0:"word"},inplace=True)
+sns.countplot(x='word', data=dfv,order=dfv.word.value_counts().iloc[:5].index)
+
+
+
+
+

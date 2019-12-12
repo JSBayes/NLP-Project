@@ -3,38 +3,37 @@ import unicodedata
 import re
 import json
 import nltk
-from nltk.tokenize.toktok import ToktokTokenizer
-from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import TfidfVectorizer
-from prepare_readme import get_ASCII, purge_non_characters, prep_readme, basic_clean, tokenize
+from prepare import get_ASCII, purge_non_characters, basic_clean, prep_readme
 import seaborn as sns
 import matplotlib.pyplot as plt
-nltk.download("stopwords")
-nltk.download("wordnet")
-origin_df = prep_readme()
-from prepare_readme import get_ASCII, purge_non_characters, prep_readme, basic_clean, tokenize
-import seaborn as sns
-import matplotlib.pyplot as plt
-nltk.download("stopwords")
-nltk.download("wordnet")
-origin_df = prep_readme()
+from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LogisticRegression
-
-tfidf = TfidfVectorizer(ngram_range=(1,2))
-tfidfs = tfidf.fit_transform(origin_df.readme_contents_lemmatized)
+origin_df = prep_readme()
+origin_df.drop(columns=["repo", "readme_contents", "readme_contents_lemmatized"], inplace=True)
+tfidf = TfidfVectorizer(ngram_range=(1,1))
+tfidfs = tfidf.fit_transform(origin_df.readme_contents_stemmed)
 X = tfidfs
 y = origin_df.language
 X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, test_size=.5)
 
 
+from sklearn.model_selection import GridSearchCV
+from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, GradientBoostingClassifier, ExtraTreesClassifier
+rfc = RandomForestClassifier(random_state=123, min_samples_split=11,\
+     n_estimators=100,n_jobs=-1, max_features="auto")
+clf = AdaBoostClassifier(n_estimators=15,learning_rate=2,\
+     random_state=123, base_estimator=rfc)
+clf.fit(X_train, y_train)
+clf.score(X_test, y_test)
 
-from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, GradientBoostingClassifier
 
-lm = RandomForestClassifier(random_state=123, min_samples_split=10,\
-     n_estimators=1000,n_jobs=-1)
-lm.fit(X_train, y_train)
-lm.score(X_train, y_train)
-lm.score(X_test, y_test)
-origin_df.language.value_counts()
+from sklearn.neighbors import KNeighborsClassifier
+neigh = KNeighborsClassifier(n_neighbors=3, n_jobs=-1)
+neigh.fit(X_train, y_train)
+neigh.score(X_test, y_test)
+
+
+
+
 
