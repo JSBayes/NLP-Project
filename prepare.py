@@ -70,7 +70,7 @@ def remove_stopwords(article,extra_words=[],exclude_words=[]):
     '''
 
     # create stopword list using english
-    stopword_list = stopwords.words('english')
+    stopword_list = stopwords.words('english') + ["a", "aa","aaa","aaaa","aaaaa","aaaaaa"]
     
     # remove words in extra_words from stopword list 
     [stopword_list.remove(f'{word}') for word in extra_words]
