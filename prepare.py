@@ -130,21 +130,7 @@ def prep_readme():
     df = df.dropna()
     return df
 
-
-def tokenize_list(article):
-    '''
-    tokenizes words in a string
-    '''
-
-    # create token object
-    tokenizer = nltk.tokenize.ToktokTokenizer()
-
-    # use object to tokenize string
-    article = tokenizer.tokenize(article, return_str=False)
-    
-    return article
-
-def tokenize_(article):
+def tokenize(article):
     '''
     tokenizes words in a string
     '''

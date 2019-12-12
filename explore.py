@@ -3,10 +3,12 @@ import unicodedata
 import pandas as pd
 import nltk
 
-def get_words(text):
+def word_soup(text):
     
+    wnl = nltk.stem.WordNetLemmatizer()
+ 
     words = re.sub(r'[^\w\s]', '', text).split()
-    return words
+    return [word for word in words]
 
 def get_ngrams(df,n=2):
 
@@ -16,7 +18,7 @@ def get_ngrams(df,n=2):
 
         bigrams = nltk.ngrams(row, n)
 
-        ngram_master_list.extend(bigrams)
+        df_ngram_list.extend(bigrams)
     
     return ngram_master_list
     
